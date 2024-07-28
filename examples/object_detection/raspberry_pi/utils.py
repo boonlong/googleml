@@ -14,14 +14,17 @@
 
 import cv2
 import numpy as np
-
+from labelall import thlabel
+from PIL import ImageFont, ImageDraw, Image
 
 MARGIN = 10  # pixels
 ROW_SIZE = 30  # pixels
 FONT_SIZE = 1
 FONT_THICKNESS = 1
 TEXT_COLOR = (0, 0, 0)  # black
-
+TEXT_COLOR2=(0,255,0) #green
+fontpath = "./THSarabun.ttf"
+font = ImageFont.truetype(fontpath, 32)
 
 def visualize(
     image,
@@ -51,5 +54,9 @@ def visualize(
                      MARGIN + ROW_SIZE + bbox.origin_y)
     cv2.putText(image, result_text, text_location, cv2.FONT_HERSHEY_DUPLEX,
                 FONT_SIZE, TEXT_COLOR, FONT_THICKNESS, cv2.LINE_AA)
+    img_pil = Image.fromarray(image)
+    draw = ImageDraw.Draw(img_pil)
+    draw.text((text_location[0], text_location[1]+3), thlabel(category_name), font = font, fill = TEXT_COLOR2)
+    image = np.array(img_pil)
 
   return image
