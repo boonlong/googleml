@@ -39,6 +39,7 @@ def visualize(
                      MARGIN + ROW_SIZE + bbox.origin_y)
     cv2.putText(image, result_text, text_location, cv2.FONT_HERSHEY_PLAIN,
                 FONT_SIZE, TEXT_COLOR2, FONT_THICKNESS)
+    #thai label
     img_pil = Image.fromarray(image)
     draw = ImageDraw.Draw(img_pil)
     draw.text((text_location[0], text_location[1]+3), thlabel(category_name), font = font, fill = TEXT_COLOR2)

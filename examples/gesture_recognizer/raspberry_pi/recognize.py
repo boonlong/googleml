@@ -19,10 +19,14 @@ import time
 
 import cv2
 import mediapipe as mp
+import numpy as np
 
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from mediapipe.framework.formats import landmark_pb2
+from PIL import ImageFont, ImageDraw, Image
+from labelall import thlabel
+
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -31,6 +35,9 @@ mp_drawing_styles = mp.solutions.drawing_styles
 # Global variables to calculate FPS
 COUNTER, FPS = 0, 0
 START_TIME = time.time()
+TEXT_COLOR2=(0,0,255) #green
+fontpath = "./THSarabun.ttf"
+font = ImageFont.truetype(fontpath, 32)
 
 
 def run(model: str, num_hands: int,
@@ -161,6 +168,11 @@ def run(model: str, num_hands: int,
           cv2.putText(current_frame, result_text, (text_x, text_y),
                       cv2.FONT_HERSHEY_DUPLEX, label_font_size,
                       label_text_color, label_thickness, cv2.LINE_AA)
+          #thai label
+          img_pil = Image.fromarray(current_frame)
+          draw = ImageDraw.Draw(img_pil)
+          draw.text((text_x+1, text_y+3), thlabel(category_name), font = font, fill = TEXT_COLOR2)
+          current_frame = np.array(img_pil)
 
         # Draw hand landmarks on the frame
         hand_landmarks_proto = landmark_pb2.NormalizedLandmarkList()
